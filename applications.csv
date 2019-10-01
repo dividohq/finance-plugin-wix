@@ -1,0 +1,9 @@
+﻿"Field Name", "Field Key", "Field Type" 
+"Application ID", applicationId, Text
+"Payment ID", paymentId, Text
+"Application Status", applicationStatus, Text
+"Complete", complete, Boolean
+"Cart", cart, Text
+"User ID", userId, Text
+"Customer Name", customerName, Text
+"Credit Amount", creditAmount, Number

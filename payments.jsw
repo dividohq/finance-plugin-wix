@@ -1,0 +1,231 @@
+import wixData from 'wix-data';
+import wixStores from 'wix-stores-backend';
+import wixUsers from 'wix-users-backend';
+
+export const apiKey = "ENTER_YOUR_API_KEY";
+export const siteUrl = "ENTER_YOUR_SITE_URL_HERE";
+
+function getEnvironmentBaseUri() {
+    let split = apiKey.split('_');
+    let prefix = split[0];
+
+    switch(prefix) {
+        case 'sandbox':
+            return 'https://merchant.api.sandbox.divido.com';
+        case 'testing':
+            return 'https://merchant-api-pub.api.testing.divido.net';
+        case 'staging':
+            return 'https://merchant-api-pub.api.staging.divido.net';
+        case 'live':
+        case 'production':
+            return 'https://merchant.api.divido.com';
+        default:
+            return 'https://merchant.api.sandbox.divido.net';
+    }
+}
+
+export async function createApplication(application) {
+    return await wixData.insert("applications", application, { "suppressAuth": true })
+        .then((result) => {
+            return result
+        })
+        .catch(error => error );
+}
+
+export async function getApplication(applicationId) {
+    let baseUri = getEnvironmentBaseUri();
+    return fetch(baseUri+"/applications/" + applicationId, {
+        "method": "get",
+        "headers": {
+            "x-divido-api-key": apiKey
+        }
+    })
+        .then((httpResponse) => {
+            if (httpResponse.ok) {
+                return httpResponse.json();
+            } else {
+                return Promise.reject("Could not fetch application");
+            }
+        })
+        .then(
+            json => json.data
+        )
+        .catch(err => err)
+}
+
+export async function activateApplication(paymentId) {
+    return await wixData.get('applications', paymentId)
+        .then(application => {
+            let items = getItemsFromCart(application.cart);
+            let orderItems = [];
+            let iteration = 0;
+            for (let item in items) {
+                orderItems[iteration] = {
+                    "name": item.name,
+                    "quanity": item.quantity,
+                    "price": parseFloat(item.price) * 100
+                }
+                iteration++;
+            }
+            let body = '{"amount":' + application.creditAmount + ', "order_items":' + JSON.stringify(items) + '}';
+
+            let baseUri = getEnvironmentBaseUri();
+            return fetch(baseUri+"/applications/" + application.applicationId + "/activations", {
+                "method": "post",
+                "headers": {
+                    "x-divido-api-key": apiKey
+                },
+                "body": body
+            })
+                .then((httpResponse) => {
+                    if (httpResponse.ok) {
+                        return httpResponse.json();
+                    } else {
+                        return Promise.reject(httpResponse.json());
+                    }
+                })
+                .then(
+                    json => json.data
+                )
+                .catch(err => err);
+        });
+}
+
+
+export async function cancelApplication(paymentId) {
+    return await wixData.get('applications', paymentId)
+        .then(application => {
+            let items = getItemsFromCart(application.cart);
+            let orderItems = [];
+            let iteration = 0;
+            for (let item in items) {
+                orderItems[iteration] = {
+                    "name": item.name,
+                    "quanity": item.quantity,
+                    "price": parseFloat(item.price) * 100
+                }
+                iteration++;
+            }
+            let body = '{"amount":' + application.creditAmount + ', "order_items":' + JSON.stringify(items) + '}';
+            let baseUri = getEnvironmentBaseUri();
+            return fetch(baseUri+"/applications/" + application.applicationId + "/cancellations", {
+                "method": "post",
+                "headers": {
+                    "x-divido-api-key": apiKey
+                },
+                "body": body
+            })
+                .then((httpResponse) => {
+                    if (httpResponse.ok) {
+                        return httpResponse.json();
+                    } else {
+                        return Promise.reject(httpResponse.json());
+                    }
+                })
+                .then(
+                    json => json.data
+                )
+                .catch(err => err);
+        });
+}
+
+export async function generateCartPayload() {
+    return wixStores.getCurrentCart()
+        .then( async cart => {
+            let user = wixUsers.currentUser;
+            let application = {
+                "paymentId": cart._id,
+                "cart": cart,
+                "userId": user.id
+            };
+            try {
+                const result = await createApplication(application);
+                let items = getItemsFromCart(cart);
+                return {
+                    apiKey: apiKey,
+                    items: items,
+                    total: (cart.totals.total) * 100,
+                    paymentId: result._id,
+                    url: siteUrl
+                };
+            }
+            catch (error) {
+                return await Promise.reject(error);
+            }
+        })
+        .catch(error => Promise.reject(error));
+}
+
+function getItemsFromCart(cart) {
+    let items = [];
+    let iteration = 0;
+    for (let item of cart.lineItems) {
+        let name = item.name;
+        for (let opt of item.options) {
+            name = name + ' - ' + opt.option + ': ' + opt.selection;
+        }
+        items[iteration] = {
+            id: item.productId,
+            name: name,
+            quantity: item.quantity,
+            price: item.price
+        }
+        iteration++;
+    }
+    if (cart.totals.shipping > 0) {
+        items[iteration] = {
+            name: 'Shipping',
+            price: cart.totals.shipping,
+            quantity: 1
+        }
+    }
+    return items;
+}
+
+export async function getUserApplications() {
+    let user = wixUsers.currentUser;
+
+    return await wixData.query('applications')
+        .eq("userId", user.id)
+        .isNotEmpty("applicationId")
+        .find({ "suppressAuth": true })
+        .then(result => {
+            let applications = [];
+            let iteration = 0;
+            for (let application of result.items) {
+                let itemsStr = "";
+                let items = getItemsFromCart(application.cart);
+                for (let item of items) {
+                    itemsStr += item.quantity + " x " + item.name + " - £" + item.price + "\n";
+                }
+                applications[iteration] = application;
+                applications[iteration].itemsStr = itemsStr;
+                iteration++;
+            }
+            return applications;
+        })
+        .catch(error => Promise.reject(error))
+}
+
+export async function getAllApplications() {
+    return await wixData.query('applications')
+        .isNotEmpty("applicationId")
+        .find()
+        .then(result => {
+            let applications = [];
+            let iteration = 0;
+            for (let application of result.items) {
+                let itemsStr = "";
+                let items = getItemsFromCart(application.cart);
+                for (let item of items) {
+                    itemsStr += item.quantity + " x " + item.name + " - £" + item.price + "\n";
+                }
+                applications[iteration] = application;
+                applications[iteration].itemsStr = itemsStr;
+                iteration++;
+            }
+            return applications;
+        })
+        .catch(error => Promise.reject(error))
+}
+

@@ -1,0 +1,15 @@
+import { generateCartPayload } from 'backend/payments'
+import wixWindow from 'wix-window'
+
+
+$w.onReady(function () {
+    $w('#financeGatewayBtn').onClick(async event => {
+        await generateCartPayload()
+            .then(payload => {
+                wixWindow.openLightbox("financeGateway", payload);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    });
+});

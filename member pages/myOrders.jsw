@@ -1,0 +1,23 @@
+// For full API documentation, including code examples, visit https://wix.to/94BuAAs
+import { getUserApplications } from 'backend/payments'
+$w.onReady(function () {
+    getUserApplications()
+        .then(userApplications => {
+            if (userApplications.length > 0) {
+                $w("#applicationRepeater").data = userApplications;
+
+                $w("#applicationRepeater").onItemReady(($item, itemData, index) => {
+                    $item("#applicationId").text = itemData.paymentId
+                    $item("#applicationDate").text = itemData._createdDate.toUTCString();
+                    $item("#applicationItems").text = itemData.itemsStr;
+                    $item("#applicationStatus").text = itemData.cart.status
+                });
+                $w("#applicationRepeater").show();
+                $w("#dividoLine").show();
+                $w("#dividoHeader").show();
+            }
+        })
+        .catch(error => {
+            console.log("Error: " + error)
+        });
+});

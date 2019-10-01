@@ -1,0 +1,6 @@
+import wixWindow from 'wix-window';
+
+$w.onReady( () => {
+    let received = wixWindow.lightbox.getContext();
+    $w("#gatewayIframe").postMessage(received);
+});
