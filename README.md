@@ -3,7 +3,7 @@
 This is a guide for integrating a _Pay by Finance_ button to the Wix Store template cart, giving the customer the option to purchase all of the items in their basket through finance. Please note that this feature will not update the stock quantities tracked in your Wix Store, and is not compatible with Wix's Invoices section. 
 
 ### Before proceeding: 
-Please note that these steps are carried out from your site's Wix Editor (which can be reached by clicking on the _Edit Site_ link on the bottom left og your site's dashboard), and you must have _Dev Mode_ enabled in your site's Wix Editor. You can do this by clicking on the _Dev Mode_ option in the top menu and clicking on the _Turn on Dev Mode_ button.
+Please note that these steps are carried out from your site's Wix Editor (which can be reached by clicking on the _Edit Site_ link on the bottom left of your site's dashboard), and you must have _Dev Mode_ enabled in your site's Wix Editor. You can do this by clicking on the _Dev Mode_ option in the top menu and clicking on the _Turn on Dev Mode_ button.
 
 ### Adding a "pay by finance" option to your cart page
 
