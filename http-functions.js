@@ -19,20 +19,16 @@ export function post_webhooks(request) {
             "Content-Type": "application/json"
         }
     };
-    // get the request body
     return request.body.json()
         .then((body) => {
-            // insert the item in a collection
-            return wixData.query("applications")
-                .eq("paymentId", body.metadata.payment_id)
-                .find()
-                .then((results) => {
-                    if (results.items.length > 0) {
-                        let item = results.items[0];
-                        item.applicationId = body.application;
-                        item.applicationStatus = body.status;
-                        return wixData.update("applications", item, { "suppressAuth": true });
-                    }
+            return wixData.get("applications", body.metadata.payment_id, { "suppressAuth": true })
+                .then((item) => {
+                    item.applicationId = body.application;
+                    item.applicationStatus = body.status;
+                    return wixData.update("applications", item, { "suppressAuth": true });
+                })
+                .catch(error => {
+                    return "Could not find application"
                 });
         })
         .then((results) => {
@@ -41,7 +37,6 @@ export function post_webhooks(request) {
             };
             return ok(options);
         })
-        // something went wrong
         .catch((error) => {
             options.body = {
                 "error": error
@@ -73,13 +68,24 @@ export function post_complete(request) {
                 .then(results => {
                     if (results.items.length > 0) {
                         let item = results.items[0];
-                        let url = siteUrl+"/complete-order?id=" + item._id;
-                        options.status = 302;
-                        options.headers = { "Location": url };
-                        return response(options);
+                        if (!('complete' in item) || item.complete === false) {
+                            item.complete = true;
+                            item.customerName = params['x_first_name'] + " " + params['x_last_name'];
+                            item.creditAmount = (parseFloat(params['x_credit_amount']) * 100);
+                            wixData.update('applications', item, { "suppressAuth": true });
+                            let url = siteUrl + "/complete-order?id=" + item._id;
+                            options.status = 302;
+                            options.headers = { "Location": url };
+                            return response(options);
+                        } else {
+                            options.body = {
+                                "error": "Order is already complete"
+                            }
+                            return serverError(options);
+                        }
                     } else {
                         options.body = {
-                            "error": "Order " + params['x_application'] + " could not be found"
+                            "error": "Order could not be found"
                         }
                         return serverError(options);
                     }

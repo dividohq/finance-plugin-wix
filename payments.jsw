@@ -4,6 +4,7 @@ import wixUsers from 'wix-users-backend';
 
 export const apiKey = "ENTER_YOUR_API_KEY";
 export const siteUrl = "ENTER_YOUR_SITE_URL_HERE";
+export const cartMin = 0;
 
 function getEnvironmentBaseUri() {
     let split = apiKey.split('_');
@@ -22,6 +23,21 @@ function getEnvironmentBaseUri() {
         default:
             return 'https://merchant.api.sandbox.divido.net';
     }
+}
+
+export async function checkCartPrice() {
+    return wixStores.getCurrentCart()
+        .then((cart) => {
+            var total = cart.totals.total;
+            var cartMax = 10000;
+            if (total < cartMin) {
+                return false
+            } else if (total >= cartMax) {
+                return false;
+            } else {
+                return true;
+            }
+        });
 }
 
 export async function createApplication(application) {
@@ -129,29 +145,29 @@ export async function cancelApplication(paymentId) {
         });
 }
 
+
+
 export async function generateCartPayload() {
     return wixStores.getCurrentCart()
-        .then( async cart => {
+        .then((cart) => {
             let user = wixUsers.currentUser;
             let application = {
                 "paymentId": cart._id,
                 "cart": cart,
                 "userId": user.id
             };
-            try {
-                const result = await createApplication(application);
-                let items = getItemsFromCart(cart);
-                return {
-                    apiKey: apiKey,
-                    items: items,
-                    total: (cart.totals.total) * 100,
-                    paymentId: result._id,
-                    url: siteUrl
-                };
-            }
-            catch (error) {
-                return await Promise.reject(error);
-            }
+            return createApplication(application)
+                .then(result => {
+                    let items = getItemsFromCart(cart);
+                    return {
+                        apiKey: apiKey,
+                        items: items,
+                        total: (cart.totals.total) * 100,
+                        paymentId: result._id,
+                        url: siteUrl
+                    }
+                })
+                .catch(error => Promise.reject(error));
         })
         .catch(error => Promise.reject(error));
 }

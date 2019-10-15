@@ -1,0 +1,55 @@
+import { getAllApplications, activateApplication, cancelApplication } from 'backend/payments'
+
+$w.onReady(function () {
+    getAllApplications()
+        .then(applications => {
+            console.log(applications);
+            if (applications.length > 0) {
+                $w("#applicationRepeater").data = applications;
+
+                $w("#applicationRepeater").onItemReady(($item, itemData, index) => {
+                    $item("#applicationId").text = itemData.applicationId
+                    $item("#applicationDate").text = itemData._createdDate.toUTCString();
+                    $item("#applicationStatus").text = itemData.applicationStatus
+                    $item("#applicationCustomer").text = itemData.customerName
+                    $item("#applicationItems").text = itemData.itemsStr
+                    if (itemData.applicationStatus === 'READY') {
+                        $item("#activateBtn").show();
+                        $item("#activateBtn").onClick((event) => {
+                            activateApplication(itemData._id)
+                                .then(activation => {
+                                    if (activation.status === 'AWAITING-ACTIVATION') {
+                                        $item("#applicationStatus").text = "ACTIVATED";
+                                        $item("#activateBtn").hide();
+                                        $item("#cancelBtn").hide();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                })
+                        })
+                    }
+                    if (itemData.applicationStatus === 'READY' || itemData.applicationStatus === 'SIGNED') {
+                        $item("#cancelBtn").show();
+                        $item("#cancelBtn").onClick((event) => {
+                            cancelApplication(itemData._id)
+                                .then(cancellation => {
+                                    if (cancellation.status === 'PENDING') {
+                                        $item("#applicationStatus").text = "CANCELLED";
+                                        $item("#activateBtn").hide();
+                                        $item("#cancelBtn").hide();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                })
+                        })
+                    }
+                });
+                $w("#applicationRepeater").show();
+            }
+        })
+        .catch(error => {
+            console.log("Error: " + error)
+        });
+});
