@@ -1,8 +1,8 @@
 # integrations-wix
 
-This is a guide for integrating a _Pay by Finance_ button to the Wix Store template cart, giving the customer the option to purchase all of the items in their basket through finance. Please note that this feature will not update the stock quantities tracked in your Wix Store, and is not compatible with Wix's Invoices section. 
+This is a guide for integrating a _Pay by Finance_ button to the Wix Store template cart, giving the customer the option to purchase all of the items in their basket through finance. Please note that this feature will not update the stock quantities tracked in your Wix Store, and is not compatible with Wix's Invoices section.
 
-### Before proceeding: 
+### Before proceeding:
 Please note that these steps are carried out from your site's Wix Editor (which can be reached by clicking on the _Edit Site_ link on the bottom left of your site's dashboard), and you must have _Dev Mode_ enabled in your site's Wix Editor. You can do this by clicking on the _Dev Mode_ option in the top menu and clicking on the _Turn on Dev Mode_ button.
 
 ### Adding a "pay by finance" option to your cart page
@@ -21,6 +21,21 @@ Please note that these steps are carried out from your site's Wix Editor (which 
 12. From your new collection (click on _applications_ in the left hand _Site Structure_ menu to see the collection), click on the _+ (Add Field)_ icon to add fields corresponding to the information in the _applications.csv_ file
 13. Hover over the _Pages_ label within the _Site Structure_ left hand menu and click on the _+_ icon that appears adjacent, then click on _Add Page_ in the popup list. Entitle the page _Complete_. Click on the _cog_ icon that appears next to the page title when you hover above it in the left hand _Site Structure_ menu and choose the _settings_ option in the dropdown list. Choose the _SEO (Google)_ tab in the _Page Settings_ section and underneath the question _"What's the page URL?"_, type _"complete-application"_. This is the page that your customer will end up on after completing the process, so design it how you wish.
 
+
+## You can carry out the following steps if you wish to add cart information to your _Application Complete_ page
+1. Click on the link to your _Complete_ page, situated on the left hand _Site Structure_ menu
+2. Click on the _+ (Add)_ pill on the left of the Wix Editor then hover over the _Text_ option. Drag the appropriate text option into your _Complete_ page, then click on the text field and change the ID in the _Properties_ panel to `applicationId`. This field will now show the Finance Application ID.
+3. Click on the _+ (Add)_ pill on the left of the Wix Editor then hover over the _Lists & Grids_ option. Drag a _Repeater_ element from the list into your page (preferably a more text based one). Click on the repeater and change the ID in the _Properties_ Panel to `itemRepeater`. This will contain your customer's cart items.
+4. Click on the _Manage Items_ pill that appears when clicking on your Repeater in the editor and remove all but the first Item in the list by clicking on the _Ellipsis icon_ adjacent to the items you want to remove, and choosing the _Delete_ option from the popup list
+5. Add text to the repeater container (by clicking on the _* (Add)_ pill in the Wix Editor and hovering over the _Text_ option) or edit existing text within the repeater, changing the ID in the text element's _Properties_ panel so that the information within will automatically display the following information:
+    - `itemName`: The products name
+    - `itemPrice`: The product price
+    - `itemQuantity`: The quantity of the product
+    - `itemOptions`: The various options (ie. size) of the chosen product
+6. You can also add a product image to the repeater: Click on the _+ (Add)_ pill on the left of the Wix Editor then hover over the _Image_ option. Choose a placeholder image and drag it into your repeater container. Edit the image using the resize and crop tool built into Wix, and once you're happy with the dimensions, change the ID in the _Properties_ panel to `itemImage`. 
+6. Open the code for this page (by clicking on the _Complete Page Code_ bar at the bottom of the Wix Editor) and copy the code located in complete.jsw into it
+
+
 ### You can carry out the following steps if you wish to administer your finance applications via an Admin only page on your site:
 
 1. Hover over the _Pages_ label within the _Site Structure_ left hand menu and click on the _+_ icon that appears adjacent, then click on _Add Page_ in the popup list
@@ -37,7 +52,7 @@ Please note that these steps are carried out from your site's Wix Editor (which 
 7. Add buttons (by clicking on the _* (Add)_ pill in the Wix Editor and hovering over the _Button_ option) or edit existing buttons within the repeater, changing the ID in the text element's _Properties_ panel so that the button will automatically perform the following functions when clicked:
     - `activateBtn`: Send a notification to the lender that the customer has received the goods, and the order has been fulfilled
     - `cancelBtn`: Send a notification to the lender that the application has been cancelled
-8. Open the code for this page (by clicking on the _Applications Page Code_ bar at the bottom of the Wix Editor) and copy the code located in Applications.jsw into it
+8. Open the code for this page (by clicking on the _Applications Page Code_ bar at the bottom of the Wix Editor) and copy the code located in applications.jsw into it
 
 ### You can also make a page for members to keep track of their finance applications, using a similar method to the admin panel guide outlined above:
 

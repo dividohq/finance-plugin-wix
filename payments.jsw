@@ -162,6 +162,7 @@ export async function generateCartPayload() {
                     return {
                         apiKey: apiKey,
                         items: items,
+                        currency: cart.currency.code,
                         total: (cart.totals.total) * 100,
                         paymentId: result._id,
                         url: siteUrl
@@ -245,3 +246,21 @@ export async function getAllApplications() {
         .catch(error => Promise.reject(error))
 }
 
+
+export async function getApplication(id) {
+	return await wixData.get('applications', id, {"suppressAuth": true })
+		.then( application => {
+			let index = 0;
+			for(let item of application.cart.lineItems) {
+				let itemOptions = "";
+				for (let opt of item.options) {
+					itemOptions = itemOptions+opt.option+': '+opt.selection+'\n';
+				}
+				application.cart.lineItems[index].options = itemOptions;
+				application.cart.lineItems[index]._id = (index+1).toString();
+				index++;
+			}
+			return application;
+		})
+		.catch( error => Promise.reject(error))
+}

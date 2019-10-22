@@ -1,0 +1,25 @@
+import {getApplication} from 'backend/payments';
+import wixLocation from 'wix-location';
+
+$w.onReady(function (event) {
+
+    let query = wixLocation.query;
+    getApplication(query.id)
+        .then( (application) => {
+            $w("#itemRepeater").data = application.cart.lineItems;
+            console.log(application.cart);
+			$w("#itemRepeater").onItemReady( ($item, itemData, index) => {
+                console.log(itemData);
+                $item("#itemImage").src = itemData.mediaItem.src;
+				$item("#itemName").text = itemData.name
+				$item("#itemPrice").text = application.cart.currency.symbol+itemData.price.toString();
+				$item("#itemQuantity").text = itemData.quantity.toString();
+				$item("#itemOptions").text = itemData.options
+			});
+
+            $w("#applicationId").text = application.paymentId;
+        })
+        .catch ( error => {
+			console.log(error);
+		})
+});
