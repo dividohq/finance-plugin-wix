@@ -213,7 +213,7 @@ export async function getUserApplications() {
                 let itemsStr = "";
                 let items = getItemsFromCart(application.cart);
                 for (let item of items) {
-                    itemsStr += item.quantity + " x " + item.name + " - £" + item.price + "\n";
+                    itemsStr += item.quantity + " x " + item.name + " - " + application.cart.currency.symbol + item.price + "\n";
                 }
                 applications[iteration] = application;
                 applications[iteration].itemsStr = itemsStr;
@@ -235,7 +235,7 @@ export async function getAllApplications() {
                 let itemsStr = "";
                 let items = getItemsFromCart(application.cart);
                 for (let item of items) {
-                    itemsStr += item.quantity + " x " + item.name + " - £" + item.price + "\n";
+                    itemsStr += item.quantity + " x " + item.name + " - " + application.cart.currency.symbol + item.price + "\n";
                 }
                 applications[iteration] = application;
                 applications[iteration].itemsStr = itemsStr;

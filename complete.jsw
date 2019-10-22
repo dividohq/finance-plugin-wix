@@ -13,7 +13,7 @@ $w.onReady(function (event) {
         $w("#itemRepeater").onItemReady( ($item, itemData, index) => {
             $item("#itemImage").src = itemData.mediaItem.src;
     				$item("#itemName").text = itemData.name
-    				$item("#itemPrice").text = application.cart.currency.symbol+itemData.price.toString();
+    				$item("#itemPrice").text = application.cart.currency.symbol+itemData.price.toFixed(2);
     				$item("#itemQuantity").text = itemData.quantity.toString();
     				$item("#itemOptions").text = itemData.options
     		});
