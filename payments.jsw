@@ -195,6 +195,14 @@ function getItemsFromCart(cart) {
             price: cart.totals.shipping,
             quantity: 1
         }
+        iteration++;
+    }
+    if (cart.totals.discount > 0) {
+        items[iteration] = {
+            name: 'Coupon - ' + cart.appliedCoupon.name,
+            price: 0 - cart.totals.discount,
+            quantity: 1
+        }
     }
     return items;
 }
