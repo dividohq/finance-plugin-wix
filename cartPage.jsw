@@ -1,8 +1,17 @@
-import { generateCartPayload } from 'backend/payments'
+import { generateCartPayload, checkCartPrice } from 'backend/payments'
 import wixWindow from 'wix-window'
 
 
 $w.onReady(function () {
+    wixWindow.postMessage({"redirect": wixLocation.url })
+
+    await checkCartPrice()
+        .then(financeAvailable => {
+            if (financeAvailable === true) {
+                $w("#financeGatewayBtn").show();
+            }
+        });
+
     $w('#financeGatewayBtn').onClick(async event => {
         await generateCartPayload()
             .then(payload => {
