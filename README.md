@@ -47,7 +47,7 @@ Please note that these steps are carried out from your site's Wix Editor (which 
     - `applicationId`: The Application's ID #
     - `applicationDate`: The date the application was created
     - `applicationStatus`: The current status of the application
-    - `customerName`: The name of the customer
+    - `applicationCustomer`: The name of the customer
     - `applicationItems`: The items purchased in this order
 7. Add buttons (by clicking on the *_* (Add)_* pill in the Wix Editor and hovering over the *_Button_* option) or edit existing buttons within the repeater, changing the ID in the text element's *_Properties_* panel so that the button will automatically perform the following functions when clicked:
     - `activateBtn`: Send a notification to the lender that the customer has received the goods, and the order has been fulfilled
