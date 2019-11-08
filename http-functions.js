@@ -2,17 +2,6 @@ import wixData from 'wix-data';
 import { response, ok, serverError } from 'wix-http-functions';
 import {siteUrl} from 'backend/payments';
 
-export function get_test(request) {
-    return ok({
-        "headers": {
-            "Content-Type": "application/json"
-        },
-        "body": {
-            "okay": true
-        }
-    })
-}
-
 export function post_webhooks(request) {
     let options = {
         "headers": {
