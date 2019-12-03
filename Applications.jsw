@@ -3,7 +3,6 @@ import { getAllApplications, activateApplication, cancelApplication } from 'back
 $w.onReady(function () {
     getAllApplications()
         .then(applications => {
-            console.log(applications);
             if (applications.length > 0) {
                 $w("#applicationRepeater").data = applications;
 

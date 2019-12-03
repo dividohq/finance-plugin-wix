@@ -1,6 +1,19 @@
 import wixWindow from 'wix-window';
+import wixLocation from 'wix-location';
 
 $w.onReady( () => {
     let received = wixWindow.lightbox.getContext();
-    $w("#gatewayIframe").postMessage(received);
+    setTimeout(
+        () => {
+            $w("#gatewayIframe").postMessage(received);
+        },
+        3600
+    );
+    
+    $w("#gatewayIframe").onMessage((event, $x) => {
+        let message = event.data;
+        if ("redirect" in message) {
+            wixLocation.to(message.redirect);
+        }
+    });
 });

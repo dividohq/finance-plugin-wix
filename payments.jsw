@@ -4,7 +4,7 @@ import wixUsers from 'wix-users-backend';
 
 export const apiKey = "ENTER_YOUR_API_KEY";
 export const siteUrl = "ENTER_YOUR_SITE_URL_HERE";
-export const cartMin = 0;
+export const cartMin = 1;
 
 function getEnvironmentBaseUri() {
     let split = apiKey.split('_');
@@ -26,18 +26,16 @@ function getEnvironmentBaseUri() {
 }
 
 export async function checkCartPrice() {
-    return wixStores.getCurrentCart()
-        .then((cart) => {
-            var total = cart.totals.total;
-            var cartMax = 10000;
-            if (total < cartMin) {
-                return false
-            } else if (total >= cartMax) {
-                return false;
-            } else {
-                return true;
-            }
-        });
+    let cart = await wixStores.getCurrentCart();
+    let total = cart.totals.total;
+    const cartMax = 25000;
+    if (await total < cartMin) {
+        return false
+    } else if (await total >= cartMax) {
+        return false;
+    } else {
+        return true;
+    }
 }
 
 export async function createApplication(application) {
@@ -48,7 +46,7 @@ export async function createApplication(application) {
         .catch(error => error );
 }
 
-export async function getApplication(applicationId) {
+export async function getApplicationFromApi(applicationId) {
     let baseUri = getEnvironmentBaseUri();
     return fetch(baseUri+"/applications/" + applicationId, {
         "method": "get",
@@ -221,7 +219,7 @@ export async function getUserApplications() {
                 let itemsStr = "";
                 let items = getItemsFromCart(application.cart);
                 for (let item of items) {
-                    itemsStr += item.quantity + " x " + item.name + " - £" + item.price + "\n";
+                    itemsStr += item.quantity + " x " + item.name + " - " + application.cart.currency.symbol +  item.price + "\n";
                 }
                 applications[iteration] = application;
                 applications[iteration].itemsStr = itemsStr;
@@ -243,7 +241,7 @@ export async function getAllApplications() {
                 let itemsStr = "";
                 let items = getItemsFromCart(application.cart);
                 for (let item of items) {
-                    itemsStr += item.quantity + " x " + item.name + " - £" + item.price + "\n";
+                    itemsStr += item.quantity + " x " + item.name + " - " + application.cart.currency.symbol + item.price + "\n";
                 }
                 applications[iteration] = application;
                 applications[iteration].itemsStr = itemsStr;
