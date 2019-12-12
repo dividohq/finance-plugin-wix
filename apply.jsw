@@ -1,0 +1,16 @@
+import { confirmApplication } from 'backend/payments';
+import wixLocation from 'wix-location';
+import wixWindow from 'wix-window';
+
+$w.onReady(function (event) {
+    let query = wixLocation.query;
+    if (typeof query.id !== 'undefined') {
+        confirmApplication(query.id)
+            .then((proposal) => {
+                wixWindow.postMessage({ "redirect": proposal.urls.application_url })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+});
