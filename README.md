@@ -35,7 +35,7 @@ Please note that these steps are carried out from your site's Wix Editor (which 
     - `itemQuantity`: The quantity of the product
     - `itemOptions`: The various options (ie. size) of the chosen product
 6. You can also add a product image to the repeater: Click on the  **_+ (Add)_** pill on the left of the Wix Editor then hover over the  **_Image_** option. Choose a placeholder image and drag it into your repeater container. Edit the image using the resize and crop tool built into Wix, and once you're happy with the dimensions, change the ID in the  **_Properties_** panel to `itemImage`. 
-6. Open the code for this page (by clicking on the  **_Complete Page Code_** bar at the bottom of the Wix Editor) and copy the code located in complete.jsw into it
+7. Open the code for this page (by clicking on the  **_Complete Page Code_** bar at the bottom of the Wix Editor) and copy the code located in complete.jsw into it
 
 
 ### You can carry out the following steps if you wish to administer your finance applications via an Admin only page on your site:
