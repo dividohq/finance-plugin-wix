@@ -9,7 +9,7 @@ Please note that these steps are carried out from your site's Wix Editor (which 
 
 1. Copy the code located in the  **_payments.jsw_** and  **_http-functions.js_** files and add pages with the same name within the  **_Backend_** section of your Wix website (hover over  **_Backend_** in the left hand  **_Site Structure_** menu and click on the  **_+_** button which appears to the right of the text. Click on  **_New File_** in the dropdown options popup). Copy the code into the respective new files
 2. Click on one of the pages that already exists in the left hand  **_Site Structure_** menu, then click on the  **_+ (Add)_** button within the editor screen and select the  **_Lightbox_**  option. Choose a lightbox from the list (preferably one like  **_Welcome (Jazzy)_** that opens in the middle of the page and has a close button outside of the actual lightbox)
-3. Click on the  **_**Menus and Pages**_** pill, then click on the  **_Lightboxes_** option in the first menu. Click on the ellipsis (**...**) option on the right hand side of your chosen lightbox and then click on the  **_Settings_** link. This should bring up a menu where the first question is  **_"What's the lightbox's name?"**. Enter  **_financeGateway_** below this, then in the  **_Lightbox Page Settings_** section below this, set  **_Automatically display lightbox on pages_** to  **_No**
+3. Click on the  **_**Menus and Pages**_** pill, then click on the  **_Lightboxes_** option in the first menu. Click on the ellipsis (**...**) option on the right hand side of your chosen lightbox and then click on the  **_Settings_** link. This should bring up a menu where the first question is  **_"What's the lightbox's name?"_**. Enter  **_financeGateway_** below this, then in the  **_Lightbox Page Settings_** section below this, set  **_Automatically display lightbox on pages_** to  **_No**
 4. Click on  **_financeGateway_** link on the  **_Site Structure_** left hand menu. Click anywhere on the Overlay background  and click on the  **_Set Up Overlay_** button. Turn the  **_Clicking closes lightbox_** option off. Format the design of the actual lightbox as you like, but be sure to include a HTML iframe within the lightbox (Click on the  **_+ (Add)_** pill in the editor. Select the  **_More_** link and click on  **_HTML iframe_** within the  **_Embeds_** section). This iframe will show your customer's finance plan details and the application form, so it's recommended that you make this as large as possible (preferably 800px+ width and 600px+ height)
 5. Click on the iframe within the editor and change the  **_ID_** to `gatewayIframe` on the  **_Properties_** panel (If the Properties panel is not initially visible, click on  **_Tools_** on the top menu and check the  **_Properties Panel_** checkbox in the  **_Developer Tools_** option).
 6. Click on the  **_Change Website Address_** or  **_Edit Code_** button which appears when clicking on your iFrame element. Select the  **_Wesbite Address_** option to the  **_What do you want to add?_** question. A  **_What's the website address?_** question should appear below. Please type `https://wix.divido.com/gateway.html` into the answer box
@@ -43,7 +43,7 @@ Please note that these steps are carried out from your site's Wix Editor (which 
 1. Hover over the  **_Pages_** label within the  **_Site Structure_** left hand menu and click on the  **_+_** icon that appears adjacent, then click on  **_Add Page_** in the popup list
 2. Entitle the new page  **_Applications_**, then click on the cog that appears when you hover over it in the  **_Site Structure_** menu, select the  **_Settings_** option
 3. In the  **_Permissions_** tab, make sure this page is  **_Members Only**. Check the  **_Only selected members or paying customers_** answer to  **_Which members can access this page?_** and choose the  **_Admins_** option from the  **_Select from your Member Roles_** dropdown list
-4. Click on the  **_+ (Add)_** pill on the left of the Wix Editor then hover over the  **_Lists & Grids_** option. Drag a  **_Repeater_** element from the list into your page (preferably a more text based one). Click on the repeater and change the ID in the  **_Properties_** Panel to `applicationRepeater`.
+4. Click on the  **_+ (Add)_** pill on the left of the Wix Editor then hover over the  **_Lists & Grids_** option. Drag a  **_Repeater_** element from the list into your page (preferably a more text based one). Click on the repeater and change the ID in the  **_Properties_** Panel to `applicationRepeater`. This element will list all of the orders purchased via finance on your store
 5. Click on the  **_Manage Items_** pill that appears when clicking on your Repeater in the editor and remove all but the first Item in the list by clicking on the  **_Ellipsis icon_** adjacent to the items you want to remove, and choosing the  **_Delete_** option from the popup list
 6. Add text (by clicking on the  **_+ (Add)_** pill in the Wix Editor and hovering over the  **_Text_** option) or edit existing text within the repeater, changing the ID in the text element's  **_Properties_** panel so that the information within will automatically display the following information:
     - `applicationId`: The Application's ID #
@@ -54,7 +54,35 @@ Please note that these steps are carried out from your site's Wix Editor (which 
 7. Add buttons (by clicking on the  **_+ (Add)_** pill in the Wix Editor and hovering over the  **_Button_** option) or edit existing buttons within the repeater, changing the ID in the text element's  **_Properties_** panel so that the button will automatically perform the following functions when clicked:
     - `activateBtn`: Send a notification to the lender that the customer has received the goods, and the order has been fulfilled
     - `cancelBtn`: Send a notification to the lender that the application has been cancelled
-8. Open the code for this page (by clicking on the  **_Applications Page Code_** bar at the bottom of the Wix Editor) and copy the code located in applications.jsw into it
+    - `applicationBtn`: This will redirect to the Application page, if you have carried out the _Application page_ steps below
+8. Open the code for this page (by clicking on the  **_Applications Page Code_** bar at the bottom of the Wix Editor) and copy the code located in `applications.jsw` into it
+
+### If you wish to utilise a more detailed page for specific Applications, you can carry out the following steps:
+
+1. Hover over the  **_Pages_** label within the  **_Site Structure_** left hand menu and click on the  **_+_** icon that appears adjacent, then click on  **_Add Page_** in the popup list
+2. Entitle the new page  **_Application_**, then click on the cog that appears when you hover over it in the  **_Site Structure_** menu, select the  **_Settings_** option
+3. In the  **_Permissions_** tab, make sure this page is  **_Members Only**. Check the  **_Only selected members or paying customers_** answer to  **_Which members can access this page?_** and choose the  **_Admins_** option from the  **_Select from your Member Roles_** dropdown list
+4. Add text (by clicking on the  **_+ (Add)_** pill in the Wix Editor and hovering over the  **_Text_** option) or edit existing text within the page, changing the ID in the text element's  **_Properties_** panel so that the information within will automatically display the following information:
+    - `applicationId`: The Application's ID #
+    - `applicationDate`: The date the application was created
+    - `applicationStatus`: The current status of the application
+    - `applicationCustomer`: The name of the customer
+    - `applicationItems`: The items purchased in this order
+    - `applicationAddress`: The address of the customer whose order was purchased
+    - `applicationTotal`: The total cost of the purchase
+8. Add buttons (by clicking on the  **_+ (Add)_** pill in the Wix Editor and hovering over the  **_Button_** option) or edit existing buttons within the page, changing the ID in the text element's  **_Properties_** panel so that the button will automatically perform the following functions when clicked:
+    - `activateBtn`: Send a notification to the lender that the customer has received the goods, and the order has been fulfilled
+    - `cancelBtn`: Send a notification to the lender that the application has been cancelled
+4. Click on the  **_+ (Add)_** pill on the left of the Wix Editor then hover over the  **_Lists & Grids_** option. Drag a  **_Repeater_** element from the list into your page (preferably a more text based one). Click on the repeater and change the ID in the  **_Properties_** Panel to `productsRepeater`. This  section will populate with all the items purchased with this application.
+5. Click on the  **_Manage Items_** pill that appears when clicking on your Repeater in the editor and remove all but the first Item in the list by clicking on the  **_Ellipsis icon_** adjacent to the items you want to remove, and choosing the  **_Delete_** option from the popup list
+6. Add text (by clicking on the  **_+ (Add)_** pill in the Wix Editor and hovering over the  **_Text_** option) and dragging it into the repeater, or edit existing text already within the repeater, changing the ID in the text element's  **_Properties_** panel so that the information within will automatically display the following information:
+    - `itemName`: The name of the product
+    - `itemSKU`: The unique SKU of the item
+    - `itemQuantity`: The quantity purchased
+    - `itemPrice`: The individual price of the product
+    - `itemOptions`: The options attributed to this item
+    - `itemImage`: The image of the item (this ID must be used with an image)
+9. Open the code for this page (by clicking on the  **_Applications Page Code_** bar at the bottom of the Wix Editor) and copy the code located in `application.jsw` into it
 
 ### You can also make a page for members to keep track of their finance applications, using a similar method to the admin panel guide outlined above:
 

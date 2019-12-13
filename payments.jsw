@@ -254,21 +254,87 @@ export async function getAllApplications() {
 
 
 export async function getApplication(id) {
-	return await wixData.get('applications', id, {"suppressAuth": true })
-		.then( application => {
-			let index = 0;
-			for(let item of application.cart.lineItems) {
-				let itemOptions = "";
-				for (let opt of item.options) {
-					itemOptions = itemOptions+opt.option+': '+opt.selection+'\n';
-				}
-				application.cart.lineItems[index].options = itemOptions;
-				application.cart.lineItems[index]._id = (index+1).toString();
-				index++;
-			}
-			return application;
-		})
-		.catch( error => Promise.reject(error))
+    return await wixData.get('applications', id, { "suppressAuth": true })
+        .then(application => {
+            let toUpdate = application;
+            let index = 0;
+            for (let item of application.cart.lineItems) {
+                let itemOptions = "";
+                for (let opt of item.options) {
+                    itemOptions = itemOptions + opt.option + ': ' + opt.selection + '\n';
+                }
+                application.cart.lineItems[index].optionsStr = itemOptions;
+                application.cart.lineItems[index]._id = (index + 1).toString();
+                application.cart.lineItems[index].priceStr = application.cart.currency.symbol + parseInt(item.price).toFixed(2)
+                index++;
+            }
+            application.totalStr = application.cart.currency.symbol + parseInt(application.cart.totals.total).toFixed(2)
+            if (typeof application.address === 'undefined' || application.address === '') {
+                return getApplicationFromApi(application.applicationId)
+                    .then(apiApp => {
+                        //let address = apiApp.applicants[0].addresses[0];
+                        let address = {
+                            "postcode": "CT19 4BD",
+                            "flat": null,
+                            "buildingName": null,
+                            "co": null,
+                            "buildingNumber": "36",
+                            "street": "36 Geraldine Rd",
+                            "town": "Folkestone",
+                            "district": null,
+                            "monthsAtAddress": 60
+                        };
+                        application.addressStr = addressToString(address);
+
+                        toUpdate.address = address;
+                        wixData.update("applications", toUpdate)
+                            .then((results) => {
+                                let item = results; //see item below
+                            })
+                            .catch((err) => {
+                                let errorMsg = err;
+                            });
+                        return application
+                    })
+                    .catch(error => error);
+            } else {
+                application.addressStr = addressToString(application.address);
+                return application;
+            }
+        })
+        .catch(error => Promise.reject(error))
+}
+
+function addressToString(addressObj) {
+    let addressStr = "";
+    if (addressObj.co !== null && addressObj.co !== '') {
+        addressStr += addressObj.co + "\n";
+    }
+
+    if (addressObj.buildingName !== null && addressObj.buildingName !== '') {
+        addressStr += addressObj.buildingName + "\n";
+    }
+
+    if (addressObj.flat !== null && addressObj.flat !== '') {
+        addressStr += "Flat " + addressObj.flat + "\n";
+    }
+
+    if (addressObj.street !== null && addressObj.street !== '') {
+        addressStr += addressObj.street + "\n";
+    }
+
+    if (addressObj.town !== null && addressObj.town !== '') {
+        addressStr += addressObj.town + "\n";
+    }
+
+    if (addressObj.district !== null && addressObj.district !== '') {
+        addressStr += addressObj.district + "\n";
+    }
+
+    if (addressObj.postcode !== null && addressObj.postcode !== '') {
+        addressStr += addressObj.postcode + "\n";
+    }
+    return addressStr;
 }
 
 export async function confirmApplication(proposalId) {

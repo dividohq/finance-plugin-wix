@@ -1,0 +1,66 @@
+import { getApplication, activateApplication, cancelApplication } from 'backend/payments'
+import wixLocation from 'wix-location';
+
+$w.onReady(function () {
+    let query = wixLocation.query;
+    let applicationId = query.id;
+    getApplication(applicationId)
+        .then(application => {
+            $w("#applicationId").text = application.applicationId;
+            $w("#applicationDate").text = application._createdDate.toUTCString();
+            $w("#applicationCustomer").text = application.customerName;
+            $w("#applicationStatus").text = application.applicationStatus;
+            $w("#applicationTotal").text = application.totalStr;
+            $w("#applicationShipping").text = application.shipping.title;
+            $w("#applicationShippingPrice").text = application.shipping.priceString;
+            $w("#applicationAddress").text = application.addressStr;
+
+            $w("#productsRepeater").data = application.cart.lineItems;
+
+            $w("#productsRepeater").onItemReady(($item, item, index) => {
+                $item("#itemName").text = item.name
+                $item("#itemSKU").text = item.sku;
+                $item("#itemQuantity").text = item.quantity.toString();
+                $item("#itemPrice").text = item.priceStr;
+                $item("#itemOptions").text = item.options
+                $item("#itemImage").src = item.mediaItem.src;
+            });
+
+            if (application.applicationStatus === 'READY') {
+                $w("#activateBtn").show();
+                $w("#activateBtn").onClick((event) => {
+                    activateApplication(application._id)
+                        .then(activation => {
+                            if (activation.status === 'AWAITING-ACTIVATION') {
+                                $w("#applicationStatus").text = "ACTIVATED";
+                                $w("#activateBtn").hide();
+                                $w("#cancelBtn").hide();
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                })
+            }
+            if (application.applicationStatus === 'READY' || application.applicationStatus === 'SIGNED') {
+                $w("#cancelBtn").show();
+                $w("#cancelBtn").onClick((event) => {
+                    cancelApplication(application._id)
+                        .then(cancellation => {
+                            if (cancellation.status === 'PENDING') {
+                                $w("#applicationStatus").text = "CANCELLED";
+                                $w("#activateBtn").hide();
+                                $w("#cancelBtn").hide();
+                            }
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
+                })
+            }
+
+        })
+        .catch(error => {
+            console.log("Error: " + error)
+        });
+});
