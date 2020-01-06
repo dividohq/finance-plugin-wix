@@ -43,14 +43,13 @@ Please note that these steps are carried out from your site's Wix Editor (which 
 1. Hover over the  **_Pages_** label within the  **_Site Structure_** left hand menu and click on the  **_+_** icon that appears adjacent, then click on  **_Add Page_** in the popup list
 2. Entitle the new page  **_Applications_**, then click on the cog that appears when you hover over it in the  **_Site Structure_** menu, select the  **_Settings_** option
 3. In the  **_Permissions_** tab, make sure this page is  **_Members Only**. Check the  **_Only selected members or paying customers_** answer to  **_Which members can access this page?_** and choose the  **_Admins_** option from the  **_Select from your Member Roles_** dropdown list
-4. Click on the  **_+ (Add)_** pill on the left of the Wix Editor then hover over the  **_Lists & Grids_** option. Drag a  **_Repeater_** element from the list into your page (preferably a more text based one). Click on the repeater and change the ID in the  **_Properties_** Panel to `applicationRepeater`. This element will list all of the orders purchased via finance on your store
+4. Click on the  **_+ (Add)_** pill on the left of the Wix Editor then hover over the  **_Lists & Grids_** option. Drag a  **_Repeater_** element from the list into your page (preferably a more text based one). Click on the repeater and change the ID in the  **_Properties_** Panel to `applicationRepeater`. This element will list all of the orders purchased via finance on your store.
 5. Click on the  **_Manage Items_** pill that appears when clicking on your Repeater in the editor and remove all but the first Item in the list by clicking on the  **_Ellipsis icon_** adjacent to the items you want to remove, and choosing the  **_Delete_** option from the popup list
 6. Add text (by clicking on the  **_+ (Add)_** pill in the Wix Editor and hovering over the  **_Text_** option) or edit existing text within the repeater, changing the ID in the text element's  **_Properties_** panel so that the information within will automatically display the following information:
     - `applicationId`: The Application's ID #
     - `applicationDate`: The date the application was created
     - `applicationStatus`: The current status of the application
     - `applicationCustomer`: The name of the customer
-    - `applicationItems`: The items purchased in this order
 7. Add buttons (by clicking on the  **_+ (Add)_** pill in the Wix Editor and hovering over the  **_Button_** option) or edit existing buttons within the repeater, changing the ID in the text element's  **_Properties_** panel so that the button will automatically perform the following functions when clicked:
     - `activateBtn`: Send a notification to the lender that the customer has received the goods, and the order has been fulfilled
     - `cancelBtn`: Send a notification to the lender that the application has been cancelled
@@ -70,6 +69,8 @@ Please note that these steps are carried out from your site's Wix Editor (which 
     - `applicationItems`: The items purchased in this order
     - `applicationAddress`: The address of the customer whose order was purchased
     - `applicationTotal`: The total cost of the purchase
+    - `applicationShipping`: The address of the customer whose order was purchased
+    - `applicationShippingPrice`: The total cost of the purchase
 8. Add buttons (by clicking on the  **_+ (Add)_** pill in the Wix Editor and hovering over the  **_Button_** option) or edit existing buttons within the page, changing the ID in the text element's  **_Properties_** panel so that the button will automatically perform the following functions when clicked:
     - `activateBtn`: Send a notification to the lender that the customer has received the goods, and the order has been fulfilled
     - `cancelBtn`: Send a notification to the lender that the application has been cancelled

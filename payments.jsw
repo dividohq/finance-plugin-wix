@@ -70,6 +70,7 @@ export async function getApplicationFromApi(applicationId) {
 export async function activateApplication(paymentId) {
     return await wixData.get('applications', paymentId)
         .then(application => {
+            application.cart = JSON.parse(application.cart);
             let items = getItemsFromCart(application.cart);
             let orderItems = [];
             let iteration = 0;
@@ -109,6 +110,7 @@ export async function activateApplication(paymentId) {
 export async function cancelApplication(paymentId) {
     return await wixData.get('applications', paymentId)
         .then(application => {
+            application.cart = JSON.parse(application.cart);
             let items = getItemsFromCart(application.cart);
             let orderItems = [];
             let iteration = 0;
@@ -256,7 +258,7 @@ export async function getAllApplications() {
 export async function getApplication(id) {
     return await wixData.get('applications', id, { "suppressAuth": true })
         .then(application => {
-            let toUpdate = application;
+            const toUpdate = Object.assign({}, application);
             let index = 0;
             for (let item of application.cart.lineItems) {
                 let itemOptions = "";
@@ -272,18 +274,7 @@ export async function getApplication(id) {
             if (typeof application.address === 'undefined' || application.address === '') {
                 return getApplicationFromApi(application.applicationId)
                     .then(apiApp => {
-                        //let address = apiApp.applicants[0].addresses[0];
-                        let address = {
-                            "postcode": "CT19 4BD",
-                            "flat": null,
-                            "buildingName": null,
-                            "co": null,
-                            "buildingNumber": "36",
-                            "street": "36 Geraldine Rd",
-                            "town": "Folkestone",
-                            "district": null,
-                            "monthsAtAddress": 60
-                        };
+                        let address = apiApp.applicants[0].addresses[0];
                         application.addressStr = addressToString(address);
 
                         toUpdate.address = address;

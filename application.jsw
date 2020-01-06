@@ -22,7 +22,7 @@ $w.onReady(function () {
                 $item("#itemSKU").text = item.sku;
                 $item("#itemQuantity").text = item.quantity.toString();
                 $item("#itemPrice").text = item.priceStr;
-                $item("#itemOptions").text = item.options
+                $item("#itemOptions").text = item.optionsStr;
                 $item("#itemImage").src = item.mediaItem.src;
             });
 
@@ -32,7 +32,7 @@ $w.onReady(function () {
                     activateApplication(application._id)
                         .then(activation => {
                             if (activation.status === 'AWAITING-ACTIVATION') {
-                                $w("#applicationStatus").text = "ACTIVATED";
+                                $w("#applicationStatus").text = "AWAITING-ACTIVATION";
                                 $w("#activateBtn").hide();
                                 $w("#cancelBtn").hide();
                             }
@@ -48,7 +48,7 @@ $w.onReady(function () {
                     cancelApplication(application._id)
                         .then(cancellation => {
                             if (cancellation.status === 'PENDING') {
-                                $w("#applicationStatus").text = "CANCELLED";
+                                $w("#applicationStatus").text = "PENDING-CANCELLATION";
                                 $w("#activateBtn").hide();
                                 $w("#cancelBtn").hide();
                             }
