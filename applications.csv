@@ -6,4 +6,5 @@
 "Cart", cart, Text
 "User ID", userId, Text
 "Customer Name", customerName, Text
+"Address", address, Text
 "Credit Amount", creditAmount, Number

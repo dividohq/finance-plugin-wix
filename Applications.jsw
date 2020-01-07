@@ -1,4 +1,5 @@
 import { getAllApplications, activateApplication, cancelApplication } from 'backend/payments'
+import wixLocation from 'wix-location';
 
 $w.onReady(function () {
     getAllApplications()
@@ -12,6 +13,11 @@ $w.onReady(function () {
                     $item("#applicationStatus").text = itemData.applicationStatus
                     $item("#applicationCustomer").text = itemData.customerName
                     $item("#applicationItems").text = itemData.itemsStr
+
+                    $item("#applicationBtn").onClick((event) => {
+                        wixLocation.to("/finance-application?id=" + itemData._id)
+                    })
+
                     if (itemData.applicationStatus === 'READY') {
                         $item("#activateBtn").show();
                         $item("#activateBtn").onClick((event) => {
