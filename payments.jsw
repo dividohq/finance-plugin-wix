@@ -1,6 +1,7 @@
 import wixData from 'wix-data';
 import wixStores from 'wix-stores-backend';
 import wixUsers from 'wix-users-backend';
+import {fetch} from 'wix-fetch';
 
 export const apiKey = "ENTER_YOUR_API_KEY";
 export const siteUrl = "ENTER_YOUR_SITE_URL_HERE";
