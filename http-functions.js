@@ -59,7 +59,7 @@ export function post_complete(request) {
                         let item = results.items[0];
                         if (!('complete' in item) || item.complete === false) {
                             item.complete = true;
-                            item.customerName = params['x_first_name'] + " " + params['x_last_name'];
+                            item.customerName = decodeURI(params['x_first_name']) + " " + decodeURI(params['x_last_name']);
                             item.creditAmount = (parseFloat(params['x_credit_amount']) * 100);
                             wixData.update('applications', item, { "suppressAuth": true });
                             let url = siteUrl + "/complete-application?id=" + item._id;
