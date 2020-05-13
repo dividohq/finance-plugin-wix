@@ -11,7 +11,7 @@ $w.onReady(function () {
                     $item("#applicationId").text = itemData.applicationId
                     $item("#applicationDate").text = itemData._createdDate.toUTCString();
                     $item("#applicationStatus").text = itemData.applicationStatus
-                    $item("#applicationCustomer").text = itemData.customerName
+                    $item("#applicationCustomer").text = decodeURI(itemData.customerName)
                     $item("#applicationItems").text = itemData.itemsStr
 
                     $item("#applicationBtn").onClick((event) => {
