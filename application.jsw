@@ -8,7 +8,7 @@ $w.onReady(function () {
         .then(application => {
             $w("#applicationId").text = application.applicationId;
             $w("#applicationDate").text = application._createdDate.toUTCString();
-            $w("#applicationCustomer").text = application.customerName;
+            $w("#applicationCustomer").text = decodeURI(application.customerName);
             $w("#applicationStatus").text = application.applicationStatus;
             $w("#applicationTotal").text = application.totalStr;
             $w("#applicationShipping").text = application.shipping.title;
