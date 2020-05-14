@@ -272,13 +272,19 @@ export async function getApplication(id) {
                 index++;
             }
             application.totalStr = application.cart.currency.symbol + parseInt(application.cart.totals.total).toFixed(2)
-            if (typeof application.address === 'undefined' || application.address === '') {
+            if (typeof application.address === 'undefined' || application.address === '' || typeof application.email === 'undefined' || typeof application.phoneNumber === 'undefined') {
                 return getApplicationFromApi(application.applicationId)
                     .then(apiApp => {
                         let address = apiApp.applicants[0].addresses[0];
                         application.addressStr = addressToString(address);
+                        let phoneNumber = apiApp.applicants[0].phoneNumber;
+                        application.phoneNumber = phoneNumber;
+                        let email = apiApp.applicants[0].email;
+                        application.email = email;
 
                         toUpdate.address = address;
+                        toUpdate.email = email;
+                        toUpdate.phoneNumber = phoneNumber;
                         wixData.update("applications", toUpdate)
                             .then((results) => {
                                 let item = results; //see item below

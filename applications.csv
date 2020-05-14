@@ -1,4 +1,4 @@
-﻿"Field Name", "Field Key", "Field Type" 
+﻿"Field Name", "Field Key", "Field Type"
 "Application ID", applicationId, Text
 "Payment ID", paymentId, Text
 "Application Status", applicationStatus, Text
@@ -8,3 +8,5 @@
 "Customer Name", customerName, Text
 "Address", address, Text
 "Credit Amount", creditAmount, Number
+"Email", email, Text
+"Phone number", phoneNumber, Text
