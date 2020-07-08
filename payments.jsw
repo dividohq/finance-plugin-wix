@@ -6,6 +6,8 @@ import {fetch} from 'wix-fetch';
 export const apiKey = "ENTER_YOUR_API_KEY";
 export const siteUrl = "ENTER_YOUR_SITE_URL_HERE";
 export const cartMin = 1;
+// language options "en", "fi" , "se", "no", "es", "da"
+export const language = "en";
 
 function getEnvironmentBaseUri() {
     let split = apiKey.split('_');
@@ -166,7 +168,8 @@ export async function generateCartPayload() {
                         currency: cart.currency.code,
                         total: (cart.totals.total) * 100,
                         paymentId: result._id,
-                        url: siteUrl
+                        url: siteUrl,
+                        language: language
                     }
                 })
                 .catch(error => Promise.reject(error));
