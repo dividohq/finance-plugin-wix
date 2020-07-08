@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Adds
 - This changelog [@andiscrete](https://github.com/andiscrete).
-- Version information to Gateway payload
+- Version information to Gateway payload [@andiscrete](https://github.com/andiscrete).
 
 ## [0.5.2] - 2020-05-14
 
