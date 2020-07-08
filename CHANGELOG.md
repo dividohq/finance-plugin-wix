@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Adds
 - This changelog [@andiscrete](https://github.com/andiscrete).
 - Version information to Gateway payload [@andiscrete](https://github.com/andiscrete).
+- Language support integration for the Gateway payload [@freddieline](https://github.com/freddieline).
+- Additional information regarding the above in the readme [@andiscrete](https://github.com/andiscrete).
 
 ## [0.5.2] - 2020-05-14
 
