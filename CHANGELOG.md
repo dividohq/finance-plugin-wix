@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.5.3] - 2020-05-14
+## [0.5.4] - 2020-07-27
+
+### Changes
+- Tweaks the functionality of language support [@andiscrete](https://github.com/andiscrete).
+
+## [0.5.3] - 2020-07-07
 
 ### Adds
 - This changelog [@andiscrete](https://github.com/andiscrete).

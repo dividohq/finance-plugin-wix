@@ -1,14 +1,14 @@
 import wixData from 'wix-data';
 import wixStores from 'wix-stores-backend';
 import wixUsers from 'wix-users-backend';
+import wixSiteBackend from 'wix-site-backend';
 import {fetch} from 'wix-fetch';
 
 export const apiKey = "ENTER_YOUR_API_KEY";
 export const siteUrl = "ENTER_YOUR_SITE_URL_HERE";
 export const cartMin = 1;
-export const pluginVersion = '0.5.3';
-// language options "en", "fi" , "se", "no", "es", "da"
-export const language = "en";
+export const pluginVersion = '0.5.4';
+export const languageOverride = false;
 
 function getEnvironmentBaseUri() {
     let split = apiKey.split('_');
@@ -152,31 +152,34 @@ export async function cancelApplication(paymentId) {
 
 
 export async function generateCartPayload() {
-    return wixStores.getCurrentCart()
-        .then((cart) => {
-            let user = wixUsers.currentUser;
-            let application = {
-                "paymentId": cart._id,
-                "cart": cart,
-                "userId": user.id
-            };
-            return createApplication(application)
-                .then(result => {
-                    let items = getItemsFromCart(cart);
-                    return {
-                        apiKey: apiKey,
-                        items: items,
-                        currency: cart.currency.code,
-                        total: (cart.totals.total) * 100,
-                        paymentId: result._id,
-                        pluginVersion: pluginVersion,
-                        url: siteUrl,
-                        language: language
-                    }
-                })
-                .catch(error => Promise.reject(error));
-        })
-        .catch(error => Promise.reject(error));
+    try {
+        const cart = await wixStores.getCurrentCart();
+        let user = wixUsers.currentUser;
+        let applicationObj = {
+            "paymentId": cart._id,
+            "cart": cart,
+            "userId": user.id
+        };
+        const application = await createApplication(applicationObj);
+        const items = getItemsFromCart(cart);
+        let returnObj = {
+            apiKey: apiKey,
+            items: items,
+            currency: cart.currency.code,
+            total: (cart.totals.total) * 100,
+            paymentId: application._id,
+            pluginVersion: pluginVersion,
+            url: siteUrl
+        }
+        if (true === languageOverride) {
+            const locale = await wixSiteBackend.generalInfo.getLocale();
+            returnObj.language = locale;
+        }
+        return returnObj;
+    }
+    catch (error) {
+        console.log(error);
+    }
 }
 
 function getItemsFromCart(cart) {
