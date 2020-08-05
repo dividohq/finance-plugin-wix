@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.5] - 2020-08-05
+
+### Fixes
+- Issue with the Wix cart object sometimes ignoring discounts [@andiscrete](https://github.com/andiscrete).
+
 ## [0.5.4] - 2020-07-27
 
 ### Changes
