@@ -162,11 +162,14 @@ export async function generateCartPayload() {
         };
         const application = await createApplication(applicationObj);
         const items = getItemsFromCart(cart);
+        const itemsTotal = items.reduce((acc, item) => {
+            return acc + item.price;
+        }, 0);
         let returnObj = {
             apiKey: apiKey,
             items: items,
             currency: cart.currency.code,
-            total: (cart.totals.total) * 100,
+            total: (itemsTotal) * 100,
             paymentId: application._id,
             pluginVersion: pluginVersion,
             url: siteUrl
