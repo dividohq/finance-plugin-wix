@@ -163,7 +163,7 @@ export async function generateCartPayload() {
         const application = await createApplication(applicationObj);
         const items = getItemsFromCart(cart);
         const itemsTotal = items.reduce((acc, item) => {
-            return acc + item.price;
+            return acc + (item.price*item.quantity);
         }, 0);
         let returnObj = {
             apiKey: apiKey,
